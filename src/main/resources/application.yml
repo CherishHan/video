@@ -1,2 +1,19 @@
 server:
-  port: 9090
+  port: 8081
+
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://127.0.0.1:3306/video?serverTimezone=UTC
+    username: root
+    password: handon
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      #driver-class-name: com.mysql.jdbc.Driver
+#      jdbc-url: jdbc:mysql://127.0.0.1:3306/video
+#      username: root
+#      password: handon
+#      data-source-class-name: com.mysql.cj.jdbc.Driver
+
+
+
