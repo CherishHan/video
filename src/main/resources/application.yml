@@ -6,7 +6,7 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mysql://127.0.0.1:3306/video?serverTimezone=UTC
     username: root
-    password: root
+    password: handon
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       #driver-class-name: com.mysql.jdbc.Driver

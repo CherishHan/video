@@ -28,7 +28,7 @@ public class AccountDetailsService implements UserDetailsService {
         Objects.requireNonNull(name, "name must be not null!");
         Account account = accountMapper.getAccountByName(name);
         if(StringUtils.isEmpty(account)){
-            throw new UsernameNotFoundException(format("用户%s没有找到！", name));
+            throw new UsernameNotFoundException(format("username %s not found！", name));
         }
         LoginDetail login = new LoginDetail();
         login.setAccount(account);

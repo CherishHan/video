@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/user/register")
+                .antMatchers("/user/register", "/user/test")
                 .permitAll()
                 .and()
                 .authorizeRequests()
@@ -69,6 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
                 LoginDetail login = (LoginDetail) authentication;
                 httpServletResponse.setContentType("application/json;charset=utf-8");
+                logger.info("username : {}", login.getUsername());
                 String token = JwtTokenUtils.createToken(login.getUsername(), null, false);
                 httpServletResponse.setHeader(JwtTokenUtils.TOKEN_HEADER, token);
                 logger.info("token : {}", token);

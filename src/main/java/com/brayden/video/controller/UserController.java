@@ -12,10 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -51,4 +48,11 @@ public class UserController {
         return new ResponseData("创建用户成功");
     }
 
+    @GetMapping("/test")
+    public ResponseData verify(LoginDetail loginDetail){
+        String name = loginDetail.getAccount().getName();
+        logger.info("name : {}", name);
+        String s = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        return new ResponseData(s);
+    }
 }

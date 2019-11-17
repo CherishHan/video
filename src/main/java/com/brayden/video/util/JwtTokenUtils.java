@@ -1,8 +1,8 @@
 package com.brayden.video.util;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -26,6 +26,8 @@ public class JwtTokenUtils {
     // 选择了记住我之后的过期时间为7天
     private static final long EXPIRATION_REMEMBER = 604800L;
 
+    private static final Logger logger = LoggerFactory.getLogger(JwtTokenUtils.class);
+
     /**
      * description: 创建Token
      *
@@ -38,7 +40,7 @@ public class JwtTokenUtils {
         HashMap<String, Object> map = new HashMap<>();
         map.put(ROLE_CLAIMS, roles);
         return Jwts.builder()
-                //采用HS512算法对JWT进行的签名,PRIMARY_KEY是我们的密钥
+                //采用HS256算法对JWT进行的签名,PRIMARY_KEY是我们的密钥
                 .signWith(SignatureAlgorithm.HS256, PRIMARY_KEY)
                 //设置角色名
                 .setClaims(map)
@@ -48,6 +50,14 @@ public class JwtTokenUtils {
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
                 .compact();
+    }
+
+    public static Jws<Claims> verify(String token){
+        Jws<Claims> claimsJws = Jwts.parser().setSigningKey(PRIMARY_KEY).parseClaimsJws(token);
+        JwsHeader header = claimsJws.getHeader();
+        Claims body = claimsJws.getBody();
+        logger.info("header : {}, body : {}", header, body);
+        return claimsJws;
     }
 
     /**
