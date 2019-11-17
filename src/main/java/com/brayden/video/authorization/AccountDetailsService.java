@@ -1,10 +1,7 @@
 package com.brayden.video.authorization;
 
-import com.brayden.video.common.VideoException;
 import com.brayden.video.entity.Account;
-import com.brayden.video.entity.User;
 import com.brayden.video.mapper.AccountMapper;
-import com.brayden.video.service.interfaces.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

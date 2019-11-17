@@ -1,5 +1,6 @@
 package com.brayden.video.controller;
 
+import com.brayden.video.authorization.LoginDetail;
 import com.brayden.video.entity.Account;
 import com.brayden.video.entity.User;
 import com.brayden.video.service.interfaces.UserService;
@@ -7,6 +8,7 @@ import com.brayden.video.util.ResponseData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
