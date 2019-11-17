@@ -1,26 +1,25 @@
 package com.brayden.video.config;
 
 import com.brayden.video.authorization.CustomAuthenticationFilter;
+import com.brayden.video.authorization.LoginDetail;
 import com.brayden.video.authorization.UserAuthenticationProvider;
+import com.brayden.video.util.JwtTokenUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.json.Json;
-import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -41,10 +40,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                .antMatchers("/user/register")
+                .permitAll()
+                .and()
+                .authorizeRequests()
                 .anyRequest()
                 .authenticated()
-                //  .permitAll()
-                .and()
+               .and()
                 .formLogin()
                 .and()
                 .cors()
@@ -65,7 +67,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setAuthenticationSuccessHandler(new AuthenticationSuccessHandler() {
             @Override
             public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+                LoginDetail login = (LoginDetail) authentication;
                 httpServletResponse.setContentType("application/json;charset=utf-8");
+                String token = JwtTokenUtils.createToken(login.getUsername(), null, false);
+                httpServletResponse.setHeader(JwtTokenUtils.TOKEN_HEADER, token);
+                logger.info("token : {}", token);
                 JsonObjectBuilder builder = Json.createObjectBuilder();
                 builder.add("status", "success").add("message", "登录成功！");
                 PrintWriter out = httpServletResponse.getWriter();
