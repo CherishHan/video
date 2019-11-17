@@ -29,12 +29,6 @@ public class UserController {
     @Autowired
     private PasswordEncoder encoder;
 
-    @PostMapping("/login")
-    public User login(@RequestBody User user){
-        logger.info("name : {}, password : {}", user.getName(), user.getAccount().getCredentials());
-        return user;
-    }
-
     @PostMapping("/register")
     @Transactional
     public ResponseData create(@RequestBody User user){
@@ -54,4 +48,18 @@ public class UserController {
         userService.addAccount(account);
         return new ResponseData("创建用户成功");
     }
+
+    @PostMapping("/login")
+    public ResponseData login(@RequestBody Account account){
+        logger.info("name : {}, pass : {}", account.getName(), account.getCredentials());
+        Account ac = userService.getAccountByName(account.getName());
+        if(StringUtils.isEmpty(ac)){
+            return new ResponseData(false, "此账号不存在！");
+        }
+        if(!encoder.matches(account.getCredentials(), ac.getCredentials())){
+            return new ResponseData(false, "账号或密码错误！");
+        }
+        return new ResponseData(true, "登录成功！");
+    }
+
 }
