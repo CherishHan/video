@@ -11,7 +11,7 @@ class VideoApplicationTests {
     @Test
     void contextLoads() {
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMzk3MTI2OTE3OSIsInJvbGUiOm51bGwsImlzcyI6IkdlbnQuTmkiLCJleHAiOjE1NzQwMTQ2MDMsImlhdCI6MTU3NDAxMTAwM30.VD7F2hAR4zV1tyxrgxT0eBfZkTeATAytke4z9qqJRiw";
-        JwtTokenUtils.verify(token);
+        JwtTokenUtils.decode(token);
     }
 
 }

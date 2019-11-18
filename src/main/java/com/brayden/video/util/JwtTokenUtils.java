@@ -52,7 +52,7 @@ public class JwtTokenUtils {
                 .compact();
     }
 
-    public static Jws<Claims> verify(String token){
+    public static Jws<Claims> decode(String token){
         Jws<Claims> claimsJws = Jwts.parser().setSigningKey(PRIMARY_KEY).parseClaimsJws(token);
         JwsHeader header = claimsJws.getHeader();
         Claims body = claimsJws.getBody();

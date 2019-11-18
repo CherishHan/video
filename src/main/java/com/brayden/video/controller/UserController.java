@@ -49,10 +49,11 @@ public class UserController {
     }
 
     @GetMapping("/test")
-    public ResponseData verify(LoginDetail loginDetail){
-        String name = loginDetail.getAccount().getName();
-        logger.info("name : {}", name);
-        String s = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+    public ResponseData verify(){
+   //     String name = loginDetail.getAccount().getName();
+  //      logger.info("name : {}", name);
+  //      String s = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        String s = "success";
         return new ResponseData(s);
     }
 }

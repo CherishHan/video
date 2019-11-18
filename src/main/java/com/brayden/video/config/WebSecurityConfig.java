@@ -2,6 +2,7 @@ package com.brayden.video.config;
 
 import com.brayden.video.authorization.CustomAuthenticationFilter;
 import com.brayden.video.authorization.LoginDetail;
+import com.brayden.video.authorization.TokenAuthenticationFilter;
 import com.brayden.video.authorization.UserAuthenticationProvider;
 import com.brayden.video.util.JwtTokenUtils;
 import org.slf4j.Logger;
@@ -40,7 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/user/register", "/user/test")
+                .antMatchers("/user/register", "/user/test", "/upload")
                 .permitAll()
                 .and()
                 .authorizeRequests()
@@ -51,7 +52,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .cors()
                 .and()
-                .csrf().disable();
+                .csrf().disable()
+                .addFilterBefore(new TokenAuthenticationFilter("/user/test"), CustomAuthenticationFilter.class);
         http.addFilterAt(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
