@@ -6,10 +6,15 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:mysql://127.0.0.1:3306/video?serverTimezone=UTC
     username: root
-    password: root
+    password: handon
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       #driver-class-name: com.mysql.jdbc.Driver
+  servlet:
+    multipart:
+      max-file-size: 2000MB
+      max-request-size: 2000MB
+      enabled: true
 #      jdbc-url: jdbc:mysql://127.0.0.1:3306/video
 #      username: root
 #      password: root
