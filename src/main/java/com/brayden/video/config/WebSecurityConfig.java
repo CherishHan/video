@@ -66,34 +66,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public CustomAuthenticationFilter customAuthenticationFilter() throws Exception {
         CustomAuthenticationFilter filter = new CustomAuthenticationFilter();
         filter.setAuthenticationManager(authenticationManagerBean());
-        filter.setAuthenticationSuccessHandler(new AuthenticationSuccessHandler() {
-            @Override
-            public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-                LoginDetail login = (LoginDetail) authentication;
-                httpServletResponse.setContentType("application/json;charset=utf-8");
-                logger.info("username : {}", login.getUsername());
-                String token = JwtTokenUtils.createToken(login.getUsername(), null, false);
-                httpServletResponse.setHeader(JwtTokenUtils.TOKEN_HEADER, token);
-                logger.info("token : {}", token);
-                JsonObjectBuilder builder = Json.createObjectBuilder();
-                builder.add("status", "success").add("message", "登录成功！");
-                PrintWriter out = httpServletResponse.getWriter();
-                out.write(builder.build().toString());
-                out.flush();
-                out.close();
-            }
+        filter.setAuthenticationSuccessHandler((httpServletRequest, httpServletResponse, authentication) -> {
+            LoginDetail login = (LoginDetail) authentication;
+            httpServletResponse.setContentType("application/json;charset=utf-8");
+            logger.info("username : {}", login.getUsername());
+            String token = JwtTokenUtils.createToken(login.getUsername(), null, false);
+            httpServletResponse.setHeader(JwtTokenUtils.TOKEN_HEADER, token);
+            logger.info("token : {}", token);
+            JsonObjectBuilder builder = Json.createObjectBuilder();
+            builder.add("status", "success").add("message", "登录成功！");
+            PrintWriter out = httpServletResponse.getWriter();
+            out.write(builder.build().toString());
+            out.flush();
+            out.close();
         });
-        filter.setAuthenticationFailureHandler(new AuthenticationFailureHandler() {
-            @Override
-            public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-                httpServletResponse.setContentType("application/json;charset=utf-8");
-                JsonObjectBuilder builder = Json.createObjectBuilder();
-                builder.add("status", "fail").add("message", "账号或密码错误！");
-                PrintWriter out = httpServletResponse.getWriter();
-                out.write(builder.build().toString());
-                out.flush();
-                out.close();
-            }
+        filter.setAuthenticationFailureHandler((httpServletRequest, httpServletResponse, e) -> {
+            httpServletResponse.setContentType("application/json;charset=utf-8");
+            JsonObjectBuilder builder = Json.createObjectBuilder();
+            builder.add("status", "fail").add("message", "账号或密码错误！");
+            PrintWriter out = httpServletResponse.getWriter();
+            out.write(builder.build().toString());
+            out.flush();
+            out.close();
         });
         filter.setFilterProcessesUrl("/user/login");
         return filter;

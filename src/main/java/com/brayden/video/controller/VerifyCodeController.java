@@ -28,7 +28,7 @@ public class VerifyCodeController {
     @ResponseBody
     @GetMapping("/getImg")
     public void getImg(HttpServletResponse response, HttpServletRequest request) throws IOException {
-        HashMap<String,Object> hashMap= VerifyCodeUtil.createImg(6,3,300,500,18, Color.white,"/static/system/login/img/test.png");
+        HashMap<String,Object> hashMap= VerifyCodeUtil.createImg(6,3,300,500,18, Color.white,"classpath:static/img/timed.jpg");
         request.getSession().setAttribute("correctCheckCode",hashMap.get("correctCheckCode"));
         ImageIO.write((BufferedImage)hashMap.get("BufferedImage"), "PNG", response.getOutputStream()); //将图片输出
     }

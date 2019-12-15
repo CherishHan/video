@@ -1,5 +1,7 @@
 package com.brayden.video.util;
 
+import org.springframework.util.ResourceUtils;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -32,9 +34,9 @@ public class VerifyCodeUtil {
         Graphics2D g = (Graphics2D) image.getGraphics();
         // 读取本地图片，做背景图片
         //  URL resource = getClass().getResource("/system/login/img/" + (random.nextInt(4) + 1) + ".png");
-        URL resource = VerifyCodeUtil.class.getResource(defaultBackGroundImg);
+       // URL resource = VerifyCodeUtil.class.getResource(defaultBackGroundImg);
         try {
-            g.drawImage(ImageIO.read(new File("C:\\Users\\handon\\Desktop\\timed.jpg")), 0, fontSize, width, height, null); //将背景图片从高度30开始
+            g.drawImage(ImageIO.read(ResourceUtils.getFile(defaultBackGroundImg)), 0, fontSize, width, height, null); //将背景图片从高度30开始
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
